@@ -1,0 +1,2098 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ime Senter - Integrasjonsplattform</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* === ROOT VARIABLER === */
+        :root {
+            --primary: #2a5b8c;
+            --secondary: #4a9d8f;
+            --accent: #ff7b54;
+            --light: #f8f9fa;
+            --dark: #2d3748;
+            --safe: #5cb85c;
+            --warning: #f0ad4e;
+            --danger: #d9534f;
+            --discrimination: #9c27b0;
+            --transition: all 0.3s ease;
+        }
+
+        /* === GLOBAL STYLES === */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #333;
+            line-height: 1.6;
+            background-color: #f5f7fa;
+            overflow-x: hidden;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .btn {
+            padding: 12px 30px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        .btn-primary {
+            background: var(--accent);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #ff6a3a;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-3px);
+        }
+
+        .btn-discrimination {
+            background: var(--discrimination);
+            color: white;
+        }
+
+        .btn-discrimination:hover {
+            background: #7b1fa2;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 50px;
+            padding-top: 20px;
+        }
+
+        .section-title h2 {
+            font-size: 2.2rem;
+            color: var(--primary);
+            margin-bottom: 15px;
+        }
+
+        .section-title p {
+            color: var(--dark);
+            max-width: 700px;
+            margin: 0 auto;
+            font-size: 1.1rem;
+        }
+
+        /* === HEADER === */
+        header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 15px 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo i {
+            font-size: 2rem;
+        }
+
+        .logo h1 {
+            font-size: 1.6rem;
+            font-weight: 700;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            padding: 8px 12px;
+            border-radius: 4px;
+            transition: var(--transition);
+            position: relative;
+        }
+
+        nav a:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        nav a.active {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .language-switcher {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-top: 10px;
+        }
+
+        .lang-btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            padding: 6px 12px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: var(--transition);
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .lang-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .lang-btn.active {
+            background: white;
+            color: var(--primary);
+        }
+
+        /* === HERO SECTION === */
+        .hero {
+            background: linear-gradient(rgba(42, 91, 140, 0.85), rgba(74, 157, 143, 0.85));
+            color: white;
+            padding: 100px 0;
+            text-align: center;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .hero h2 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            line-height: 1.3;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            opacity: 0.95;
+        }
+
+        .cta-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        /* === SOS BUTTON === */
+        .sos-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 100;
+            background: var(--danger);
+            color: white;
+            border-radius: 50%;
+            width: 70px;
+            height: 70px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.5rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            cursor: pointer;
+            border: none;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(217, 83, 79, 0.7); }
+            70% { box-shadow: 0 0 0 15px rgba(217, 83, 79, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(217, 83, 79, 0); }
+        }
+        
+        /* === DISCRIMINATION BUTTON === */
+        .discrimination-btn {
+            position: fixed;
+            bottom: 30px;
+            left: 30px;
+            z-index: 100;
+            background: var(--discrimination);
+            color: white;
+            border-radius: 50%;
+            width: 70px;
+            height: 70px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.5rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            cursor: pointer;
+            border: none;
+            animation: discrimination-pulse 3s infinite;
+        }
+
+        @keyframes discrimination-pulse {
+            0% { box-shadow: 0 0 0 0 rgba(156, 39, 176, 0.5); }
+            50% { box-shadow: 0 0 0 15px rgba(156, 39, 176, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(156, 39, 176, 0); }
+        }
+
+        /* === FEATURES === */
+        .features {
+            padding: 80px 0;
+            background-color: white;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+        }
+
+        .feature-card {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: var(--transition);
+            border: 1px solid #f0f0f0;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .feature-icon {
+            height: 150px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-size: 3.5rem;
+        }
+
+        .feature-content {
+            padding: 25px;
+        }
+
+        .feature-content h3 {
+            color: var(--primary);
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+
+        /* === HOW IT WORKS === */
+        .how-it-works {
+            padding: 80px 0;
+            background: linear-gradient(to bottom, #f0f7ff 0%, #e6f3ff 100%);
+        }
+
+        .steps {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            margin-top: 40px;
+            gap: 20px;
+        }
+
+        .step {
+            flex: 1;
+            min-width: 250px;
+            text-align: center;
+            padding: 25px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .step-number {
+            width: 50px;
+            height: 50px;
+            background: var(--accent);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin: 0 auto 20px;
+        }
+
+        .step h3 {
+            color: var(--primary);
+            margin-bottom: 15px;
+        }
+
+        /* === CV BUILDER === */
+        .cv-section {
+            padding: 80px 0;
+            background: #f9fbfd;
+        }
+
+        .cv-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-top: 30px;
+        }
+
+        .cv-form, .cv-preview {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            border: 1px solid #f0f0f0;
+        }
+
+        .cv-form h3, .cv-preview h3 {
+            color: var(--primary);
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .experience-entry, .education-entry, .skill-entry {
+            border: 1px solid #eee;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            position: relative;
+            background: #fafafa;
+        }
+
+        .remove-entry {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: var(--danger);
+            color: white;
+            border: none;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+        }
+
+        #cv-output {
+            background: #f9f9f9;
+            padding: 25px;
+            min-height: 500px;
+            font-family: 'Roboto', sans-serif;
+            border-radius: 8px;
+        }
+
+        .cv-header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid var(--secondary);
+        }
+
+        .cv-header h1 {
+            color: var(--primary);
+            margin-bottom: 8px;
+            font-size: 2.2rem;
+        }
+
+        .cv-section-title {
+            margin-bottom: 25px;
+        }
+
+        .cv-section-title h2 {
+            color: var(--primary);
+            border-bottom: 2px solid var(--secondary);
+            padding-bottom: 6px;
+            margin-bottom: 15px;
+            font-size: 1.4rem;
+        }
+
+        .cv-item {
+            margin-bottom: 18px;
+        }
+
+        .cv-item h3 {
+            margin-bottom: 5px;
+            font-size: 1.2rem;
+        }
+
+        .cv-item .date {
+            color: #666;
+            font-style: italic;
+            font-size: 0.95rem;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--dark);
+            font-size: 0.95rem;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-family: inherit;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            border-color: var(--primary);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(42, 91, 140, 0.1);
+        }
+
+        .form-group textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        /* === RESOURCES === */
+        .resources {
+            padding: 80px 0;
+            background-color: white;
+        }
+
+        .resources-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+        }
+
+        .resource-card {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            border: 1px solid #eaeaea;
+            transition: var(--transition);
+        }
+
+        .resource-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .resource-header {
+            background: var(--secondary);
+            color: white;
+            padding: 18px 25px;
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+        
+        .resource-header.discrimination-help {
+            background: var(--discrimination);
+        }
+
+        .resource-content {
+            padding: 25px;
+        }
+
+        .resource-list {
+            list-style: none;
+        }
+
+        .resource-list li {
+            padding: 14px 0;
+            border-bottom: 1px solid #f0f0f0;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transition: var(--transition);
+        }
+
+        .resource-list li:hover {
+            background-color: #f9f9f9;
+            padding-left: 10px;
+        }
+
+        .resource-list li:last-child {
+            border-bottom: none;
+        }
+
+        .resource-list i {
+            color: var(--secondary);
+            font-size: 1.3rem;
+            min-width: 25px;
+        }
+        
+        .resource-list .discrimination-help i {
+            color: var(--discrimination);
+        }
+
+        /* === CONTACT FORM === */
+        .contact-section {
+            padding: 80px 0;
+            background: #f0f7ff;
+        }
+
+        .contact-container {
+            max-width: 700px;
+            margin: 0 auto;
+            background: white;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        #contactForm .form-group {
+            margin-bottom: 25px;
+        }
+        
+        /* === DISCRIMINATION MODAL === */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+        }
+
+        .modal-content {
+            background: white;
+            margin: 10% auto;
+            padding: 30px;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 600px;
+            position: relative;
+            animation: modalFade 0.3s;
+        }
+
+        @keyframes modalFade {
+            from { opacity: 0; transform: translateY(-50px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .close {
+            position: absolute;
+            right: 20px;
+            top: 15px;
+            font-size: 28px;
+            cursor: pointer;
+            color: #777;
+            transition: var(--transition);
+        }
+
+        .close:hover {
+            color: #333;
+        }
+        
+        /* === USER AUTHENTICATION === */
+        .auth-modal {
+            display: none;
+        }
+        
+        .auth-container {
+            max-width: 400px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .auth-tabs {
+            display: flex;
+            margin-bottom: 20px;
+        }
+        
+        .auth-tab {
+            flex: 1;
+            padding: 12px;
+            text-align: center;
+            background: #f5f5f5;
+            cursor: pointer;
+            border-bottom: 2px solid #ddd;
+        }
+        
+        .auth-tab.active {
+            background: white;
+            border-bottom: 2px solid var(--accent);
+            font-weight: 600;
+        }
+        
+        .auth-form {
+            display: none;
+        }
+        
+        .auth-form.active {
+            display: block;
+        }
+        
+        .user-actions {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            margin-left: auto;
+        }
+        
+        .user-greeting {
+            color: white;
+            font-weight: 600;
+        }
+        
+        /* === FOOTER === */
+        footer {
+            background: var(--dark);
+            color: white;
+            padding: 70px 0 30px;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .footer-column h3 {
+            color: var(--accent);
+            margin-bottom: 25px;
+            font-size: 1.3rem;
+            position: relative;
+            padding-bottom: 10px;
+        }
+
+        .footer-column h3::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 50px;
+            height: 3px;
+            background: var(--accent);
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 14px;
+        }
+
+        .footer-links a {
+            color: #ccc;
+            text-decoration: none;
+            transition: var(--transition);
+            display: block;
+            padding: 5px 0;
+        }
+
+        .footer-links a:hover {
+            color: white;
+            padding-left: 8px;
+        }
+
+        .contact-info {
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+        }
+
+        .contact-item i {
+            margin-top: 4px;
+            color: var(--accent);
+        }
+
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .social-links a {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 42px;
+            height: 42px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            color: white;
+            transition: var(--transition);
+            font-size: 1.2rem;
+        }
+
+        .social-links a:hover {
+            background: var(--accent);
+            transform: translateY(-5px);
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: #aaa;
+            font-size: 0.95rem;
+        }
+        
+        /* === USER DASHBOARD === */
+        .dashboard {
+            display: none;
+            padding: 40px 0;
+            background: #f0f7ff;
+        }
+        
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+        }
+        
+        .dashboard-card {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            transition: var(--transition);
+        }
+        
+        .dashboard-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+        
+        .dashboard-card h3 {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--primary);
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+        
+        .report-list {
+            list-style: none;
+        }
+        
+        .report-item {
+            padding: 15px;
+            background: #f9f9f9;
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+        
+        .report-date {
+            font-size: 0.9rem;
+            color: #777;
+        }
+
+        /* === RESPONSIVE DESIGN === */
+        @media (max-width: 992px) {
+            .header-container {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            nav ul {
+                justify-content: center;
+            }
+            
+            .language-switcher {
+                justify-content: center;
+            }
+            
+            .hero h2 {
+                font-size: 2.2rem;
+            }
+            
+            .cv-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .user-actions {
+                margin-top: 15px;
+                justify-content: center;
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero {
+                padding: 80px 0;
+            }
+            
+            .hero h2 {
+                font-size: 1.8rem;
+            }
+            
+            .hero p {
+                font-size: 1.1rem;
+            }
+            
+            .steps {
+                flex-direction: column;
+            }
+            
+            .sos-btn, .discrimination-btn {
+                width: 60px;
+                height: 60px;
+                font-size: 1.3rem;
+            }
+            
+            .section-title h2 {
+                font-size: 1.8rem;
+            }
+            
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .cta-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .contact-container, .auth-container {
+                padding: 25px;
+            }
+            
+            nav ul {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .discrimination-btn {
+                left: 15px;
+                bottom: 90px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- SOS Button -->
+    <button class="sos-btn" id="sosBtn">
+        <i class="fas fa-life-ring"></i>
+    </button>
+    
+    <!-- Discrimination Button -->
+    <button class="discrimination-btn" id="discriminationBtn">
+        <i class="fas fa-exclamation-triangle"></i>
+    </button>
+
+    <!-- Discrimination Modal -->
+    <div id="discriminationModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Rapporter Diskriminering</h2>
+            <form id="discriminationForm">
+                <div class="form-group">
+                    <label>Hva skjedde? (Obligatorisk)</label>
+                    <textarea placeholder="Beskriv hendelsen i detalj..." required></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Når skjedde det? (Obligatorisk)</label>
+                    <input type="date" required>
+                </div>
+                <div class="form-group">
+                    <label>Hvor skjedde det? (Obligatorisk)</label>
+                    <input type="text" placeholder="Sted/Adresse" required>
+                </div>
+                <div class="form-group">
+                    <label>Type diskriminering</label>
+                    <select>
+                        <option value="">Velg type...</option>
+                        <option>Etnisk bakgrunn</option>
+                        <option>Religiøs tilhørighet</option>
+                        <option>Kjønn</option>
+                        <option>Alder</option>
+                        <option>Funksjonsnedsettelse</option>
+                        <option>Annet</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Ditt navn (valgfritt)</label>
+                    <input type="text" placeholder="Fullt navn">
+                </div>
+                <div class="form-group">
+                    <label>Kontaktinfo (valgfritt)</label>
+                    <input type="text" placeholder="E-post eller telefon">
+                </div>
+                <div class="form-group">
+                    <label>
+                        <input type="checkbox" required> 
+                        Jeg bekrefter at opplysningene er korrekte
+                    </label>
+                </div>
+                <button type="submit" class="btn btn-discrimination">
+                    <i class="fas fa-paper-plane"></i> Send Rapport
+                </button>
+            </form>
+        </div>
+    </div>
+    
+    <!-- Authentication Modal -->
+    <div id="authModal" class="modal auth-modal">
+        <div class="auth-container">
+            <div class="auth-tabs">
+                <div class="auth-tab active" data-tab="login">Logg inn</div>
+                <div class="auth-tab" data-tab="register">Registrer</div>
+            </div>
+            
+            <form id="loginForm" class="auth-form active">
+                <div class="form-group">
+                    <label>E-post</label>
+                    <input type="email" id="loginEmail" placeholder="din@epost.com" required>
+                </div>
+                <div class="form-group">
+                    <label>Passord</label>
+                    <input type="password" id="loginPassword" placeholder="Ditt passord" required>
+                </div>
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-sign-in-alt"></i> Logg inn
+                </button>
+            </form>
+            
+            <form id="registerForm" class="auth-form">
+                <div class="form-group">
+                    <label>Fullt navn</label>
+                    <input type="text" id="registerName" placeholder="Ola Nordmann" required>
+                </div>
+                <div class="form-group">
+                    <label>E-post</label>
+                    <input type="email" id="registerEmail" placeholder="din@epost.com" required>
+                </div>
+                <div class="form-group">
+                    <label>Passord</label>
+                    <input type="password" id="registerPassword" placeholder="Minst 6 tegn" required minlength="6">
+                </div>
+                <div class="form-group">
+                    <label>Bekreft passord</label>
+                    <input type="password" id="registerConfirm" placeholder="Gjenta passord" required>
+                </div>
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-user-plus"></i> Registrer deg
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header>
+        <div class="container header-container">
+            <div class="logo">
+                <i class="fas fa-hands-helping"></i>
+                <h1>Ime Senter</h1>
+            </div>
+            
+            <nav>
+                <ul>
+                    <li><a href="#" class="active" data-section="home">Hjem</a></li>
+                    <li><a href="#features" data-section="features">Tjenester</a></li>
+                    <li><a href="#cv-builder" data-section="cv-builder">CV-bygger</a></li>
+                    <li><a href="#resources" data-section="resources">Ressurser</a></li>
+                    <li><a href="#dashboard" data-section="dashboard" class="dashboard-link">Min Side</a></li>
+                    <li><a href="#contact" data-section="contact">Kontakt</a></li>
+                </ul>
+            </nav>
+            
+            <div class="user-actions" id="userActions">
+                <button id="loginBtn" class="btn btn-secondary">
+                    <i class="fas fa-sign-in-alt"></i> Logg inn
+                </button>
+                <div id="userGreeting" class="user-greeting" style="display: none;">
+                    <span id="userName"></span>
+                    <button id="logoutBtn" class="btn btn-secondary" style="margin-left: 10px;">
+                        <i class="fas fa-sign-out-alt"></i> Logg ut
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero" id="homeSection">
+        <div class="container hero-content">
+            <h2>Din vei til trygghet og integrering i Norge</h2>
+            <p>En plattform for nyankomne som ønsker å forstå det norske samfunnet, arbeidslivet, og sine rettigheter. Vi hjelper deg med språk, systemforståelse og beskyttelse mot diskriminering.</p>
+            <div class="cta-buttons">
+                <a href="#features" class="btn btn-primary">
+                    <i class="fas fa-graduation-cap"></i> Kom i gang
+                </a>
+                <a href="#contact" class="btn btn-secondary">
+                    <i class="fas fa-info-circle"></i> Kontakt oss
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="features">
+        <div class="container">
+            <div class="section-title">
+                <h2>Våre tjenester</h2>
+                <p>Vi tilbyr verktøy og ressurser for å gjøre integreringsprosessen enklere og tryggere</p>
+            </div>
+            
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-language"></i>
+                    </div>
+                    <div class="feature-content">
+                        <h3>Språklæring</h3>
+                        <p>Gratis norskkurs tilpasset ditt nivå, med fokus på arbeidslivet og hverdagslivet i Norge. Lær norsk gjennom praktiske øvelser og samtaler.</p>
+                    </div>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-building"></i>
+                    </div>
+                    <div class="feature-content">
+                        <h3>Systemforståelse</h3>
+                        <p>Lær hvordan det norske samfunnet fungerer - fra NAV og helsetjenester til skatt og utdanning. Enkle forklaringer og veiledning.</p>
+                    </div>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-briefcase"></i>
+                    </div>
+                    <div class="feature-content">
+                        <h3>Arbeidsliv</h3>
+                        <p>Verktøy for jobbsøking, CV-bygging, og forberedelse til jobbintervjuer. Tilgang til mentorprogrammer og karriererådgivning.</p>
+                    </div>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-balance-scale"></i>
+                    </div>
+                    <div class="feature-content">
+                        <h3>Rettigheter</h3>
+                        <p>Forstå dine rettigheter i Norge og hvordan du skal handle ved diskriminering eller rasisme. Tilgang til juridisk støtte og rapporteringssystemer.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works Section -->
+    <section class="how-it-works">
+        <div class="container">
+            <div class="section-title">
+                <h2>Slik fungerer det</h2>
+                <p>Tre enkle steg for å komme i gang med integreringsreisen din</p>
+            </div>
+            
+            <div class="steps">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <h3>Registrer deg</h3>
+                    <p>Opprett en gratis konto og fortell oss litt om dine behov og bakgrunn. Alt er konfidensielt.</p>
+                </div>
+                
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <h3>Velg ressurser</h3>
+                    <p>Velg fra vårt bibliotek av kurs, verktøy og tjenester som passer dine mål og situasjon.</p>
+                </div>
+                
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <h3>Kom i gang</h3>
+                    <p>Start læringsreisen din med støtte fra mentorer, språklærere og juridiske eksperter.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CV Builder Section -->
+    <section id="cv-builder" class="cv-section">
+        <div class="container">
+            <div class="section-title">
+                <h2>Bygg din CV</h2>
+                <p>Lag en profesjonell norsk CV på få minutter</p>
+            </div>
+            
+            <div class="cv-container">
+                <div class="cv-form">
+                    <h3>Personalia</h3>
+                    <div class="form-group">
+                        <label>Fullt navn</label>
+                        <input type="text" id="cv-name" placeholder="Ola Nordmann">
+                    </div>
+                    <div class="form-group">
+                        <label>E-post</label>
+                        <input type="email" id="cv-email" placeholder="ola@example.com">
+                    </div>
+                    <div class="form-group">
+                        <label>Telefon</label>
+                        <input type="tel" id="cv-phone" placeholder="+47 400 00 000">
+                    </div>
+                    <div class="form-group">
+                        <label>Adresse</label>
+                        <input type="text" id="cv-address" placeholder="Gateadresse, postnummer">
+                    </div>
+                    <div class="form-group">
+                        <label>Profil (kort beskrivelse)</label>
+                        <textarea id="cv-profile" placeholder="Kort om dine ferdigheter og mål"></textarea>
+                    </div>
+                    
+                    <h3>Arbeidserfaring</h3>
+                    <div id="experience-entries">
+                        <div class="experience-entry">
+                            <button class="remove-entry">&times;</button>
+                            <div class="form-group">
+                                <label>Stilling</label>
+                                <input type="text" class="job-title" placeholder="Butikkmedarbeider">
+                            </div>
+                            <div class="form-group">
+                                <label>Arbeidsgiver</label>
+                                <input type="text" class="job-employer" placeholder="Kiwi AS">
+                            </div>
+                            <div class="form-group">
+                                <label>Periode</label>
+                                <input type="text" class="job-period" placeholder="2020 - 2023">
+                            </div>
+                            <div class="form-group">
+                                <label>Beskrivelse</label>
+                                <textarea class="job-description" placeholder="Dine ansvarsområder..."></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <button id="add-experience" class="btn btn-primary">
+                        <i class="fas fa-plus"></i> Legg til erfaring
+                    </button>
+                    
+                    <h3>Utdanning</h3>
+                    <div id="education-entries">
+                        <div class="education-entry">
+                            <button class="remove-entry">&times;</button>
+                            <div class="form-group">
+                                <label>Utdanning</label>
+                                <input type="text" class="edu-name" placeholder="Bachelor i økonomi">
+                            </div>
+                            <div class="form-group">
+                                <label>Institusjon</label>
+                                <input type="text" class="edu-institution" placeholder="Universitetet i Oslo">
+                            </div>
+                            <div class="form-group">
+                                <label>Periode</label>
+                                <input type="text" class="edu-period" placeholder="2015 - 2018">
+                            </div>
+                        </div>
+                    </div>
+                    <button id="add-education" class="btn btn-primary">
+                        <i class="fas fa-plus"></i> Legg til utdanning
+                    </button>
+                    
+                    <h3>Ferdigheter</h3>
+                    <div id="skill-entries">
+                        <div class="skill-entry">
+                            <button class="remove-entry">&times;</button>
+                            <div class="form-group">
+                                <label>Ferdighet</label>
+                                <input type="text" class="skill-name" placeholder="Norsk språk">
+                            </div>
+                            <div class="form-group">
+                                <label>Nivå</label>
+                                <select class="skill-level">
+                                    <option>Nybegynner</option>
+                                    <option>Middels</option>
+                                    <option>Avansert</option>
+                                    <option>Ekspert</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <button id="add-skill" class="btn btn-primary">
+                        <i class="fas fa-plus"></i> Legg til ferdighet
+                    </button>
+                </div>
+                
+                <div class="cv-preview">
+                    <h3>Forhåndsvisning</h3>
+                    <div id="cv-output"></div>
+                    <button id="save-cv" class="btn btn-secondary" style="margin-top: 20px;">
+                        <i class="fas fa-save"></i> Lagre CV
+                    </button>
+                    <button id="download-cv" class="btn btn-primary" style="margin-top: 20px;">
+                        <i class="fas fa-download"></i> Last ned CV
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Resources Section -->
+    <section id="resources" class="resources">
+        <div class="container">
+            <div class="section-title">
+                <h2>Viktige ressurser</h2>
+                <p>Nøkkeltjenester og organisasjoner som kan hjelpe deg</p>
+            </div>
+            
+            <div class="resources-grid">
+                <div class="resource-card">
+                    <div class="resource-header">Juridisk Støtte</div>
+                    <div class="resource-content">
+                        <ul class="resource-list">
+                            <li><i class="fas fa-scale-balanced"></i> Diskrimineringsnemnda</li>
+                            <li><i class="fas fa-gavel"></i> Antirasistisk Senter</li>
+                            <li><i class="fas fa-people-arrows"></i> MiRA Senter</li>
+                            <li><i class="fas fa-handshake-angle"></i> JURK - Juridisk råd for kvinner</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="resource-card">
+                    <div class="resource-header">Språk og Utdanning</div>
+                    <div class="resource-content">
+                        <ul class="resource-list">
+                            <li><i class="fas fa-book"></i> Norskkurs kommunen</li>
+                            <li><i class="fas fa-globe"></i> Norwegian on the Web</li>
+                            <li><i class="fas fa-school"></i> Voksenopplæringen</li>
+                            <li><i class="fas fa-certificate"></i> Bergenstesten forberedelse</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="resource-card">
+                    <div class="resource-header">Arbeid og Karriere</div>
+                    <div class="resource-content">
+                        <ul class="resource-list">
+                            <li><i class="fas fa-user-tie"></i> NAV - Arbeid og velferd</li>
+                            <li><i class="fas fa-network-wired"></i> Integrerings- og mangfoldsdirektoratet</li>
+                            <li><i class="fas fa-briefcase"></i> Jobbsjansen-programmet</li>
+                            <li><i class="fas fa-chalkboard-user"></i> Kompetanse Norge</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="resource-card">
+                    <div class="resource-header discrimination-help">Diskrimineringshjelp</div>
+                    <div class="resource-content">
+                        <ul class="resource-list discrimination-help">
+                            <li><i class="fas fa-exclamation-circle"></i> Diskrimineringsnemnda</li>
+                            <li><i class="fas fa-balance-scale"></i> Likestillings- og diskrimineringsombudet</li>
+                            <li><i class="fas fa-phone-volume"></i> Hjelpetelefon: 22 33 44 55</li>
+                            <li><i class="fas fa-shield-alt"></i> Antirasistisk Senter</li>
+                            <li><i class="fas fa-hands-helping"></i> MiRA Senter</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Dashboard Section -->
+    <section id="dashboard" class="dashboard">
+        <div class="container">
+            <div class="section-title">
+                <h2>Min Side</h2>
+                <p>Dine ressurser, rapporter og lagrede dokumenter</p>
+            </div>
+            
+            <div class="dashboard-grid">
+                <div class="dashboard-card">
+                    <h3><i class="fas fa-file-alt"></i> Lagrede CV-er</h3>
+                    <div id="saved-cvs">
+                        <p>Ingen lagrede CV-er ennå</p>
+                    </div>
+                </div>
+                
+                <div class="dashboard-card">
+                    <h3><i class="fas fa-flag"></i> Diskrimineringsrapporter</h3>
+                    <ul class="report-list" id="report-list">
+                        <li class="report-item">
+                            Ingen rapporter ennå. Rapporter diskriminering ved å trykke på knappen nede til venstre.
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="dashboard-card">
+                    <h3><i class="fas fa-bookmark"></i> Favorittressurser</h3>
+                    <ul class="resource-list" id="favorite-resources">
+                        <li><i class="fas fa-star"></i> Du har ikke lagt til noen favoritter ennå</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact-section">
+        <div class="container">
+            <div class="section-title">
+                <h2>Kontakt Oss</h2>
+                <p>Har du spørsmål eller trenger hjelp? Ta gjerne kontakt!</p>
+            </div>
+            
+            <div class="contact-container">
+                <form id="contactForm">
+                    <div class="form-group">
+                        <label>Fullt navn</label>
+                        <input type="text" required>
+                    </div>
+                    <div class="form-group">
+                        <label>E-postadresse</label>
+                        <input type="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Melding</label>
+                        <textarea rows="5" required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Send Melding</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-column">
+                    <h3>Ime Senter</h3>
+                    <p>En plattform for å styrke integrering, forståelse og rettigheter for nyankomne i Norge.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Hurtiglenker</h3>
+                    <ul class="footer-links">
+                        <li><a href="#features">Våre tjenester</a></li>
+                        <li><a href="#cv-builder">CV-bygger</a></li>
+                        <li><a href="#resources">Ressurser</a></li>
+                        <li><a href="#dashboard" class="dashboard-link">Min Side</a></li>
+                        <li><a href="#contact">Kontakt oss</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Kontakt Oss</h3>
+                    <div class="contact-info">
+                        <div class="contact-item">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>Integrasjonsveien 15, 0165 Oslo</span>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fas fa-phone"></i>
+                            <span>+47 22 33 44 55</span>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fas fa-envelope"></i>
+                            <span>hjelp@imesenter.no</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Nyhetsbrev</h3>
+                    <p>Meld deg på vårt nyhetsbrev for tips og oppdateringer om integrering i Norge.</p>
+                    <form>
+                        <div class="form-group">
+                            <input type="email" placeholder="Din e-postadresse" required>
+                        </div>
+                        <button class="btn btn-primary">Abonner</button>
+                    </form>
+                </div>
+            </div>
+            
+            <div class="copyright">
+                &copy; 2023 Ime Senter. Alle rettigheter reservert. 
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // === APP STATE MANAGEMENT ===
+        const appState = {
+            currentUser: null,
+            reports: [],
+            savedCVs: []
+        };
+        
+        // Initialize from localStorage
+        function initAppState() {
+            const savedState = localStorage.getItem('imeSenterAppState');
+            if (savedState) {
+                const parsed = JSON.parse(savedState);
+                appState.currentUser = parsed.currentUser;
+                appState.reports = parsed.reports || [];
+                appState.savedCVs = parsed.savedCVs || [];
+            }
+            updateUI();
+        }
+        
+        // Save state to localStorage
+        function saveAppState() {
+            localStorage.setItem('imeSenterAppState', JSON.stringify(appState));
+        }
+        
+        // === USER AUTHENTICATION ===
+        const authModal = document.getElementById('authModal');
+        const loginBtn = document.getElementById('loginBtn');
+        const logoutBtn = document.getElementById('logoutBtn');
+        const authTabs = document.querySelectorAll('.auth-tab');
+        const authForms = document.querySelectorAll('.auth-form');
+        const loginForm = document.getElementById('loginForm');
+        const registerForm = document.getElementById('registerForm');
+        const userGreeting = document.getElementById('userGreeting');
+        const userNameSpan = document.getElementById('userName');
+        
+        // Toggle auth tabs
+        authTabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                const tabName = tab.dataset.tab;
+                
+                // Update active tab
+                authTabs.forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                
+                // Show corresponding form
+                authForms.forEach(form => {
+                    form.classList.remove('active');
+                    if (form.id === `${tabName}Form`) {
+                        form.classList.add('active');
+                    }
+                });
+            });
+        });
+        
+        // Open auth modal
+        loginBtn.addEventListener('click', () => {
+            authModal.style.display = 'block';
+        });
+        
+        // Login form submission
+        loginForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+            
+            // Simple validation
+            if (email && password) {
+                // In a real app, this would be an API call
+                appState.currentUser = {
+                    name: email.split('@')[0],
+                    email: email
+                };
+                
+                saveAppState();
+                updateUI();
+                authModal.style.display = 'none';
+                loginForm.reset();
+                alert(`Velkommen tilbake, ${appState.currentUser.name}!`);
+            }
+        });
+        
+        // Register form submission
+        registerForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const name = document.getElementById('registerName').value;
+            const email = document.getElementById('registerEmail').value;
+            const password = document.getElementById('registerPassword').value;
+            const confirm = document.getElementById('registerConfirm').value;
+            
+            // Validation
+            if (password !== confirm) {
+                alert('Passordene er ikke like!');
+                return;
+            }
+            
+            if (name && email && password) {
+                // In a real app, this would be an API call
+                appState.currentUser = {
+                    name: name,
+                    email: email
+                };
+                
+                saveAppState();
+                updateUI();
+                authModal.style.display = 'none';
+                registerForm.reset();
+                alert(`Takk for registreringen, ${name}!`);
+            }
+        });
+        
+        // Logout
+        logoutBtn.addEventListener('click', () => {
+            appState.currentUser = null;
+            saveAppState();
+            updateUI();
+            alert('Du er nå logget ut.');
+        });
+        
+        // Update UI based on auth state
+        function updateUI() {
+            if (appState.currentUser) {
+                loginBtn.style.display = 'none';
+                userGreeting.style.display = 'flex';
+                userNameSpan.textContent = `Hei, ${appState.currentUser.name}`;
+                document.querySelector('.dashboard').style.display = 'block';
+                document.querySelector('.dashboard-link').style.display = 'inline-block';
+            } else {
+                loginBtn.style.display = 'block';
+                userGreeting.style.display = 'none';
+                document.querySelector('.dashboard').style.display = 'none';
+                document.querySelector('.dashboard-link').style.display = 'none';
+            }
+            
+            // Update dashboard
+            updateDashboard();
+        }
+        
+        // === DISCRIMINATION REPORTING ===
+        const discriminationBtn = document.getElementById('discriminationBtn');
+        const discriminationModal = document.getElementById('discriminationModal');
+        const closeBtns = document.querySelectorAll('.close');
+        const discriminationForm = document.getElementById('discriminationForm');
+        
+        // Open discrimination modal
+        discriminationBtn.addEventListener('click', () => {
+            discriminationModal.style.display = 'block';
+        });
+        
+        // Close modals
+        closeBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                discriminationModal.style.display = 'none';
+                authModal.style.display = 'none';
+            });
+        });
+        
+        // Close modal when clicking outside
+        window.addEventListener('click', (e) => {
+            if (e.target === discriminationModal) {
+                discriminationModal.style.display = 'none';
+            }
+            if (e.target === authModal) {
+                authModal.style.display = 'none';
+            }
+        });
+        
+        // Submit discrimination report
+        discriminationForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Create report object
+            const report = {
+                id: Date.now(),
+                date: new Date().toISOString(),
+                description: this.querySelector('textarea').value,
+                incidentDate: this.querySelector('input[type="date"]').value,
+                location: this.querySelector('input[type="text"]').value,
+                type: this.querySelector('select').value,
+                name: this.querySelectorAll('input[type="text"]')[1].value,
+                contact: this.querySelectorAll('input[type="text"]')[2].value,
+                status: 'Mottatt'
+            };
+            
+            // Add to reports
+            appState.reports.push(report);
+            saveAppState();
+            
+            // Reset form and close modal
+            this.reset();
+            discriminationModal.style.display = 'none';
+            
+            // Show confirmation
+            alert('Takk for din rapport! Vi vil behandle saken din og kontakte deg hvis nødvendig.');
+            
+            // Update dashboard
+            updateDashboard();
+        });
+        
+        // === NAVIGATION ===
+        const navLinks = document.querySelectorAll('nav a');
+        
+        navLinks.forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                
+                // Scroll to section
+                window.scrollTo({
+                    top: targetElement.offsetTop - 80,
+                    behavior: 'smooth'
+                });
+                
+                // Update active link
+                navLinks.forEach(l => l.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+        
+        // === SOS BUTTON ===
+        document.getElementById('sosBtn').addEventListener('click', function() {
+            if (confirm('Trenger du nødassistanse? Vi kan kontakte krisesenter eller politi på dine vegne.')) {
+                // Visual feedback
+                this.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+                this.style.backgroundColor = '#5cb85c';
+                
+                setTimeout(() => {
+                    this.innerHTML = '<i class="fas fa-check"></i>';
+                    setTimeout(() => {
+                        this.innerHTML = '<i class="fas fa-life-ring"></i>';
+                        this.style.backgroundColor = '';
+                        alert('Nødmelding sendt! En representant vil kontakte deg umiddelbart.');
+                    }, 2000);
+                }, 1500);
+            }
+        });
+        
+        // === CV BUILDER ===
+        const addExperienceBtn = document.getElementById('add-experience');
+        const addEducationBtn = document.getElementById('add-education');
+        const addSkillBtn = document.getElementById('add-skill');
+        const saveCvBtn = document.getElementById('save-cv');
+        const downloadCvBtn = document.getElementById('download-cv');
+        
+        // Add experience entry
+        addExperienceBtn.addEventListener('click', () => {
+            addEntry('experience-entries', `
+                <div class="experience-entry">
+                    <button class="remove-entry">&times;</button>
+                    <div class="form-group">
+                        <label>Stilling</label>
+                        <input type="text" class="job-title" placeholder="Butikkmedarbeider">
+                    </div>
+                    <div class="form-group">
+                        <label>Arbeidsgiver</label>
+                        <input type="text" class="job-employer" placeholder="Kiwi AS">
+                    </div>
+                    <div class="form-group">
+                        <label>Periode</label>
+                        <input type="text" class="job-period" placeholder="2020 - 2023">
+                    </div>
+                    <div class="form-group">
+                        <label>Beskrivelse</label>
+                        <textarea class="job-description" placeholder="Dine ansvarsområder..."></textarea>
+                    </div>
+                </div>
+            `);
+        });
+        
+        // Add education entry
+        addEducationBtn.addEventListener('click', () => {
+            addEntry('education-entries', `
+                <div class="education-entry">
+                    <button class="remove-entry">&times;</button>
+                    <div class="form-group">
+                        <label>Utdanning</label>
+                        <input type="text" class="edu-name" placeholder="Bachelor i økonomi">
+                    </div>
+                    <div class="form-group">
+                        <label>Institusjon</label>
+                        <input type="text" class="edu-institution" placeholder="Universitetet i Oslo">
+                    </div>
+                    <div class="form-group">
+                        <label>Periode</label>
+                        <input type="text" class="edu-period" placeholder="2015 - 2018">
+                    </div>
+                </div>
+            `);
+        });
+        
+        // Add skill entry
+        addSkillBtn.addEventListener('click', () => {
+            addEntry('skill-entries', `
+                <div class="skill-entry">
+                    <button class="remove-entry">&times;</button>
+                    <div class="form-group">
+                        <label>Ferdighet</label>
+                        <input type="text" class="skill-name" placeholder="Norsk språk">
+                    </div>
+                    <div class="form-group">
+                        <label>Nivå</label>
+                        <select class="skill-level">
+                            <option>Nybegynner</option>
+                            <option>Middels</option>
+                            <option>Avansert</option>
+                            <option>Ekspert</option>
+                        </select>
+                    </div>
+                </div>
+            `);
+        });
+        
+        // Generic function to add entries
+        function addEntry(containerId, html) {
+            const container = document.getElementById(containerId);
+            const newEntry = document.createElement('div');
+            newEntry.innerHTML = html;
+            container.appendChild(newEntry);
+            
+            // Add remove functionality
+            newEntry.querySelector('.remove-entry').addEventListener('click', function() {
+                this.closest('.experience-entry, .education-entry, .skill-entry').remove();
+                generateCVPreview();
+            });
+            
+            // Add input listeners
+            const inputs = newEntry.querySelectorAll('input, textarea, select');
+            inputs.forEach(input => {
+                input.addEventListener('input', generateCVPreview);
+            });
+            
+            generateCVPreview();
+        }
+        
+        // Initialize remove buttons
+        function initRemoveButtons() {
+            document.querySelectorAll('.remove-entry').forEach(button => {
+                button.addEventListener('click', function() {
+                    this.closest('.experience-entry, .education-entry, .skill-entry').remove();
+                    generateCVPreview();
+                });
+            });
+        }
+        
+        // Generate CV Preview
+        function generateCVPreview() {
+            const name = document.getElementById('cv-name').value || 'Ditt navn';
+            const email = document.getElementById('cv-email').value || 'din@epost.com';
+            const phone = document.getElementById('cv-phone').value || '+47 XXX XX XXX';
+            const address = document.getElementById('cv-address').value || '';
+            const profile = document.getElementById('cv-profile').value || '';
+            
+            // Experience
+            let experienceHTML = '';
+            document.querySelectorAll('.experience-entry').forEach(entry => {
+                const title = entry.querySelector('.job-title').value || 'Stilling';
+                const employer = entry.querySelector('.job-employer').value || 'Arbeidsgiver';
+                const period = entry.querySelector('.job-period').value || 'Periode';
+                const description = entry.querySelector('.job-description').value || 'Beskrivelse av arbeidsoppgaver';
+                
+                experienceHTML += `
+                    <div class="cv-item">
+                        <h3>${title}</h3>
+                        <p><strong>${employer}</strong> | <span class="date">${period}</span></p>
+                        <p>${description}</p>
+                    </div>
+                `;
+            });
+            
+            // Education
+            let educationHTML = '';
+            document.querySelectorAll('.education-entry').forEach(entry => {
+                const name = entry.querySelector('.edu-name').value || 'Utdanning';
+                const institution = entry.querySelector('.edu-institution').value || 'Institusjon';
+                const period = entry.querySelector('.edu-period').value || 'Periode';
+                
+                educationHTML += `
+                    <div class="cv-item">
+                        <h3>${name}</h3>
+                        <p><strong>${institution}</strong> | <span class="date">${period}</span></p>
+                    </div>
+                `;
+            });
+            
+            // Skills
+            let skillsHTML = '';
+            document.querySelectorAll('.skill-entry').forEach(entry => {
+                const name = entry.querySelector('.skill-name').value || 'Ferdighet';
+                const level = entry.querySelector('.skill-level').value || 'Nivå';
+                
+                skillsHTML += `
+                    <div class="cv-item">
+                        <p><strong>${name}</strong>: ${level}</p>
+                    </div>
+                `;
+            });
+            
+            // Build final CV HTML
+            const cvHTML = `
+                <div class="cv-header">
+                    <h1>${name}</h1>
+                    <p>${email} | ${phone}${address ? '<br>' + address : ''}</p>
+                </div>
+                
+                ${profile ? `<p style="margin-bottom: 20px; font-style: italic;">${profile}</p>` : ''}
+                
+                ${experienceHTML ? `
+                <div class="cv-section-title">
+                    <h2>Arbeidserfaring</h2>
+                    ${experienceHTML}
+                </div>
+                ` : ''}
+                
+                ${educationHTML ? `
+                <div class="cv-section-title">
+                    <h2>Utdanning</h2>
+                    ${educationHTML}
+                </div>
+                ` : ''}
+                
+                ${skillsHTML ? `
+                <div class="cv-section-title">
+                    <h2>Ferdigheter</h2>
+                    ${skillsHTML}
+                </div>
+                ` : ''}
+                
+                ${!experienceHTML && !educationHTML && !skillsHTML ? 
+                    '<p>Legg til arbeidserfaring, utdanning eller ferdigheter for å se forhåndsvisning</p>' : ''}
+            `;
+            
+            document.getElementById('cv-output').innerHTML = cvHTML;
+        }
+        
+        // Save CV
+        saveCvBtn.addEventListener('click', function() {
+            if (!appState.currentUser) {
+                authModal.style.display = 'block';
+                return;
+            }
+            
+            const name = document.getElementById('cv-name').value || 'CV';
+            const cvContent = document.getElementById('cv-output').innerHTML;
+            
+            const cv = {
+                id: Date.now(),
+                name: name,
+                date: new Date().toLocaleDateString('no-NO'),
+                content: cvContent
+            };
+            
+            appState.savedCVs.push(cv);
+            saveAppState();
+            updateDashboard();
+            
+            alert(`CV-en "${name}" er lagret på din side!`);
+        });
+        
+        // Download CV
+        downloadCvBtn.addEventListener('click', function() {
+            const name = document.getElementById('cv-name').value || 'cv';
+            const printWindow = window.open('', '_blank');
+            printWindow.document.write(`
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <title>${name} CV</title>
+                    <style>
+                        body { 
+                            font-family: Arial, sans-serif; 
+                            margin: 2cm; 
+                            line-height: 1.6;
+                        }
+                        .cv-header { text-align: center; margin-bottom: 30px; }
+                        .cv-header h1 { color: #2a5b8c; margin-bottom: 5px; }
+                        .cv-section-title { margin-bottom: 20px; }
+                        .cv-section-title h2 { 
+                            color: #2a5b8c; 
+                            border-bottom: 2px solid #4a9d8f; 
+                            padding-bottom: 5px; 
+                            margin-bottom: 15px;
+                        }
+                        .cv-item { margin-bottom: 15px; }
+                        .date { color: #666; font-style: italic; }
+                        @media print {
+                            body { margin: 1cm; }
+                            .no-print { display: none; }
+                        }
+                    </style>
+                </head>
+                <body>
+                    ${document.getElementById('cv-output').innerHTML}
+                    <button class="no-print" onclick="window.print()">Skriv ut</button>
+                    <script>
+                        window.onload = function() {
+                            window.print();
+                        }
+                    <\/script>
+                </body>
+                </html>
+            `);
+            printWindow.document.close();
+        });
+        
+        // === DASHBOARD FUNCTIONS ===
+        function updateDashboard() {
+            // Update saved CVs
+            const savedCvsContainer = document.getElementById('saved-cvs');
+            if (appState.savedCVs.length > 0) {
+                savedCvsContainer.innerHTML = '';
+                appState.savedCVs.forEach(cv => {
+                    const cvElement = document.createElement('div');
+                    cvElement.className = 'report-item';
+                    cvElement.innerHTML = `
+                        <strong>${cv.name}</strong>
+                        <p>${cv.date}</p>
+                        <button class="btn btn-secondary view-cv" data-id="${cv.id}" style="margin-top: 10px;">
+                            <i class="fas fa-eye"></i> Se CV
+                        </button>
+                    `;
+                    savedCvsContainer.appendChild(cvElement);
+                });
+                
+                // Add event listeners to view buttons
+                document.querySelectorAll('.view-cv').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const cvId = this.dataset.id;
+                        const cv = appState.savedCVs.find(c => c.id == cvId);
+                        if (cv) {
+                            const cvWindow = window.open('', '_blank');
+                            cvWindow.document.write(`
+                                <!DOCTYPE html>
+                                <html>
+                                <head>
+                                    <title>${cv.name}</title>
+                                    <style>
+                                        body { 
+                                            font-family: Arial, sans-serif; 
+                                            margin: 2cm; 
+                                            line-height: 1.6;
+                                        }
+                                        .cv-header { text-align: center; margin-bottom: 30px; }
+                                        .cv-header h1 { color: #2a5b8c; margin-bottom: 5px; }
+                                        .cv-section-title { margin-bottom: 20px; }
+                                        .cv-section-title h2 { 
+                                            color: #2a5b8c; 
+                                            border-bottom: 2px solid #4a9d8f; 
+                                            padding-bottom: 5px; 
+                                            margin-bottom: 15px;
+                                        }
+                                        .cv-item { margin-bottom: 15px; }
+                                        .date { color: #666; font-style: italic; }
+                                    </style>
+                                </head>
+                                <body>
+                                    ${cv.content}
+                                </body>
+                                </html>
+                            `);
+                        }
+                    });
+                });
+            } else {
+                savedCvsContainer.innerHTML = '<p>Ingen lagrede CV-er ennå</p>';
+            }
+            
+            // Update reports
+            const reportList = document.getElementById('report-list');
+            if (appState.reports.length > 0) {
+                reportList.innerHTML = '';
+                appState.reports.forEach(report => {
+                    const reportDate = new Date(report.incidentDate).toLocaleDateString('no-NO') || 'Ukjent dato';
+                    const reportItem = document.createElement('li');
+                    reportItem.className = 'report-item';
+                    reportItem.innerHTML = `
+                        <strong>${reportDate}: ${report.type || 'Diskriminering'}</strong>
+                        <p>${report.description.substring(0, 100)}${report.description.length > 100 ? '...' : ''}</p>
+                        <p class="report-date">Status: ${report.status}</p>
+                    `;
+                    reportList.appendChild(reportItem);
+                });
+            } else {
+                reportList.innerHTML = '<li class="report-item">Ingen rapporter ennå</li>';
+            }
+        }
+        
+        // === INITIALIZATION ===
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize app state
+            initAppState();
+            
+            // Initialize CV builder
+            initRemoveButtons();
+            generateCVPreview();
+            
+            // Set up input listeners for personal info
+            document.getElementById('cv-name').addEventListener('input', generateCVPreview);
+            document.getElementById('cv-email').addEventListener('input', generateCVPreview);
+            document.getElementById('cv-phone').addEventListener('input', generateCVPreview);
+            document.getElementById('cv-address').addEventListener('input', generateCVPreview);
+            document.getElementById('cv-profile').addEventListener('input', generateCVPreview);
+            
+            // Contact form
+            document.getElementById('contactForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                alert('Takk for din melding! Vi kontakter deg innen 24 timer.');
+                this.reset();
+            });
+        });
+    </script>
+</body>
+</html>
