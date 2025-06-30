@@ -1,0 +1,32 @@
+<section id="cv-resources">
+    <h2>Gratis CV-verktøy</h2>
+    <div class="resource-grid">
+        <div class="resource">
+            <h3>Europass CV</h3>
+            <p>Offisiell europeisk CV-mal</p>
+            <a href="https://europa.eu/europass/eportfolio/screen/cv-editor?lang=no" 
+               target="_blank" 
+               class="btn">
+                Bruk Europass
+            </a>
+        </div>
+        <div class="resource">
+            <h3>Canva CV-maler</h3>
+            <p>Profesjonelle designs</p>
+            <a href="https://www.canva.com/no_no/oppstart/cv/" 
+               target="_blank" 
+               class="btn">
+                Bruk Canva
+            </a>
+        </div>
+        <div class="resource">
+            <h3>Google Docs CV</h3>
+            <p>Enkle maler i Google Docs</p>
+            <a href="https://docs.google.com/document/u/0/?ftv=1" 
+               target="_blank" 
+               class="btn">
+                Bruk Google Docs
+            </a>
+        </div>
+    </div>
+</section>
